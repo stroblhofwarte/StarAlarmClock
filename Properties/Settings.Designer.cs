@@ -82,5 +82,29 @@ namespace Stroblhofwarte.NINA.Staralarmclock.Properties {
                 this["Info"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.8")]
+        public double OuterCrop {
+            get {
+                return ((double)(this["OuterCrop"]));
+            }
+            set {
+                this["OuterCrop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double InnerCrop {
+            get {
+                return ((double)(this["InnerCrop"]));
+            }
+            set {
+                this["InnerCrop"] = value;
+            }
+        }
     }
 }

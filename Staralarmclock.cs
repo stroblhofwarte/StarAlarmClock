@@ -23,6 +23,8 @@ using NINA.Image.Interfaces;
 using NINA.Image.ImageAnalysis;
 using Nito.AsyncEx.Synchronous;
 using System.Net.NetworkInformation;
+using System.Management;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace Stroblhofwarte.NINA.Staralarmclock {
     /// <summary>
@@ -40,16 +42,15 @@ namespace Stroblhofwarte.NINA.Staralarmclock {
         private string _info = string.Empty;
         private uPLibrary.Networking.M2Mqtt.MqttClient _mqtt = null;
 
+        private string MQTT_STARS_FOUND = "Stroblhofwarte/NINA/StarAlarmClock/Stars";
+        private string MQTT_HFR_FOUND = "Stroblhofwarte/NINA/StarAlarmClock/HFR";
+        private string MQTT_HFR_ST_DEV_FOUND = "Stroblhofwarte/NINA/StarAlarmClock/HFRStDev";
+        private string MQTT_ACTIVE = "Stroblhofwarte/NINA/StarAlarmClock/Active";
+
         [ImportingConstructor]
         public Staralarmclock(IProfileService profileService, IOptionsVM options, 
             IImagingMediator imagingMediator) {
-            if (Settings.Default.UpdateSettings) {
-                Settings.Default.Upgrade();
-                Settings.Default.UpdateSettings = false;
-                CoreUtil.SaveSettings(Settings.Default);
-            }
-
-
+           
             System.Diagnostics.Debugger.Launch();
 
 
@@ -61,18 +62,23 @@ namespace Stroblhofwarte.NINA.Staralarmclock {
 
             // Hook for new images to do the analysation:
             imagingMediator.ImagePrepared += ImagingMediator_ImagePrepared;
-
+        
+            ConnectMqtt = Settings.Default.ConnectMqtt;
+            UpdateSettings = Settings.Default.UpdateSettings;
         }
 
         private void ImagingMediator_ImagePrepared(object sender, ImagePreparedEventArgs e) {
 
+            if (!UpdateSettings) {
+                return;
+            }
             IStarDetection analy = new StarDetection();
             StarDetectionParams param = new StarDetectionParams();
-            param.OuterCropRatio = 1.0;
-            param.InnerCropRatio = 0.8;
+            /*param.OuterCropRatio = 0.7;
+            param.InnerCropRatio = 0.6;*/
             param.NoiseReduction = NoiseReductionEnum.Normal;
-            param.Sensitivity = StarSensitivityEnum.Normal;
-            param.IsAutoFocus = false;
+            param.Sensitivity = StarSensitivityEnum.Highest;
+            param.IsAutoFocus = true;
 
             System.Threading.CancellationToken cancel = new System.Threading.CancellationToken();
             
@@ -80,7 +86,12 @@ namespace Stroblhofwarte.NINA.Staralarmclock {
             StarDetectionResult result = task.WaitAndUnwrapException();
             IStarDetectionAnalysis starAnal = new StarDetectionAnalysis();
             analy.UpdateAnalysis(starAnal, param, result);
-            
+            if(_mqtt != null) {
+                _mqtt.Publish(MQTT_STARS_FOUND, Encoding.UTF8.GetBytes(starAnal.DetectedStars.ToString()), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, false);
+                _mqtt.Publish(MQTT_HFR_FOUND, Encoding.UTF8.GetBytes(starAnal.HFR.ToString()), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, false);
+                _mqtt.Publish(MQTT_HFR_ST_DEV_FOUND, Encoding.UTF8.GetBytes(starAnal.HFRStDev.ToString()), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, false);
+            }
+
         }
 
         public override Task Teardown() {
@@ -106,16 +117,9 @@ namespace Stroblhofwarte.NINA.Staralarmclock {
                 return false;
             }
         }
-
-
         private bool Connect() {
             if (_mqtt == null) {
                 try {
-                    // Check if the given broker ip is online:
-                    if(!Pingable(Settings.Default.MqttBrokerIp)) {
-                        Info = "Broker not online!";
-                        return false;
-                    }
                     int port = Convert.ToInt32(Settings.Default.MqttBrokerPort);
                     _mqtt = new uPLibrary.Networking.M2Mqtt.MqttClient(Settings.Default.MqttBrokerIp, port, false, null, null, uPLibrary.Networking.M2Mqtt.MqttSslProtocols.None);
                     _mqtt.Connect("Stroblhofwarte.NINA.StarAlarmClock");
@@ -156,6 +160,11 @@ namespace Stroblhofwarte.NINA.Staralarmclock {
                 return Settings.Default.UpdateSettings;
             }
             set {
+                string state = "0";
+                if (value) state = "1";
+                if (_mqtt != null) {
+                    _mqtt.Publish(MQTT_ACTIVE, Encoding.UTF8.GetBytes(state), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, true);
+                }
                 Settings.Default.UpdateSettings = value;
                 CoreUtil.SaveSettings(Settings.Default);
                 RaisePropertyChanged();
