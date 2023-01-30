@@ -1,0 +1,44 @@
+﻿<ResourceDictionary
+    x:Class="Stroblhofwarte.NINA.Staralarmclock.Options"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--  This data template will be displayed in N.I.N.A. on the options->plugin tab with the datacontext of the TestPlugin instance  -->
+    <!--  In order for this datatemplate to be picked correctly, the key has to follow the naming convention of <IPlugin.Name>_Options -->
+    <!--  Furthermore the Resource Dictionary has to be exported via code behind export attributes  -->
+    <DataTemplate x:Key="StarAlarmClock_Options">
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="MQTT Broker ip:   " />
+                <TextBox MinWidth="50" Text="{Binding MqttBrokerIp}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="MQTT Broker port:   " />
+                <TextBox MinWidth="50" Text="{Binding MqttBrokerPort}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Connect to MQTT broker:   " />
+                <CheckBox MinWidth="50" IsChecked="{Binding ConnectMqtt}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Activate this plugin:   " />
+                <CheckBox MinWidth="50" IsChecked="{Binding UpdateSettings}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="MQTT connection state info:   " />
+                <TextBlock  Text="{Binding Info}" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>
