@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarAlarmClock", "StarAlarmClock.csproj", "{FAC51C88-4D60-4237-8E16-7CDBBF72E739}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupStarAlarmClock", "SetupStarAlarmClock\SetupStarAlarmClock.vdproj", "{89E1BB9C-2FC2-4381-B45D-81986687A256}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{FAC51C88-4D60-4237-8E16-7CDBBF72E739}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAC51C88-4D60-4237-8E16-7CDBBF72E739}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAC51C88-4D60-4237-8E16-7CDBBF72E739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89E1BB9C-2FC2-4381-B45D-81986687A256}.Debug|Any CPU.ActiveCfg = Debug
+		{89E1BB9C-2FC2-4381-B45D-81986687A256}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

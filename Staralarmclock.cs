@@ -1,4 +1,33 @@
-﻿using Stroblhofwarte.NINA.Staralarmclock.Properties;
+﻿// --------------------------------------------------------------------------------
+//
+// This file is part of the StarAlarmClock project 
+// (https://github.com/stroblhofwarte/StarAlarmClock).
+// Copyright (c) 2021, Othmar Ehrhardt, https://astro.stroblhof-oberrohrbach.de
+//
+// This program is free software: you can redistribute it and/or modify  
+// it under the terms of the GNU General Public License as published by  
+// the Free Software Foundation, version 3.
+//
+// This program is distributed in the hope that it will be useful, but 
+// WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License 
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+//
+// Author:		Othmar Ehrhardt, <othmar.ehrhardt@t-online.de>, https://astro.stroblhof-oberrohrbach.de
+//
+// Edit Log:
+//
+// Date			Who	Vers	Description
+// -----------	---	-----	-------------------------------------------------------
+// 30.01.2023               Prototype is working
+// --------------------------------------------------------------------------------
+//
+
+
+using Stroblhofwarte.NINA.Staralarmclock.Properties;
 using NINA.Core.Enum;
 using NINA.Core.Model;
 using NINA.Core.Utility;
